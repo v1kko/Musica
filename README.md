@@ -1,6 +1,8 @@
 Musica Proposal
 ===============
 
+For a better, downloadable etc version see /doc/proposal.pdf
+
 Authors
 =======
 
