@@ -33,6 +33,7 @@
 ### Sketches
 
 * The main screen
+
 ![Alt text](http://5.135.191.67/main.png "The Main Screen")
 
 * The playlist selection screen
