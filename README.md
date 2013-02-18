@@ -6,9 +6,9 @@ For a better, downloadable etc version see /doc/proposal.pdf
 Authors
 =======
 
-Victor Azizi, azizivictor@gmail.com 6277861
-Kas van 't Veer, kazaakas@hotmail.com
-Jurriaan Bremer, jurriaanbremer@gmail.com, 6297196
+* Victor Azizi, azizivictor@gmail.com 6277861
+* Kas van 't Veer, kazaakas@hotmail.com
+* Jurriaan Bremer, jurriaanbremer@gmail.com, 6297196
 
 Abstract
 ========
@@ -46,7 +46,6 @@ Screens
 
 *  Main screen: An interface with every button and information
     available, should have a nice design with textures and such
-
 *  Settings screen: Accessible through main screen, allows editing of
     the settings (servers etc.)
 
@@ -54,11 +53,8 @@ Initial division of the Feature Assignment
 ==========================================
 
 *  Victor: Music control and design of the main screen
-
 *  Kas: design of the main screen and settings screen and
     displaying current songs etc on the main screen
-
 *  Jurriaan: Initial plugin for iTunes, Protocol specification
-
 *  Everyone: Code Review, Guarding the process and progress,
     help each other where needed and/or possible
