@@ -32,10 +32,31 @@
 
 ### Sketches
 
+* The main screen
 ![Alt text](http://5.135.191.67/main.png "The Main Screen")
+
+* The playlist selection screen
+
+
+* The settings screen
 
 # Musica Style Document
 
 ## Technical Style
 
+### Java Style
+
+* Objects in own files
+* Commenting of each function
+* Code for portability
+
+### Server side Style
+
+* Python and python common style
+* Adressable with json and GET request
+
 ## Graphical Style
+
+* Vector Based UI's
+* Max 3 clicks to function
+* Overall same pallet usage (4 color preferably)
