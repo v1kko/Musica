@@ -4,7 +4,7 @@
 
 ### Objects
 
-![Alt text](http://5.135.191.67/technicalflowchart.png "The Flowchart")
+![The flowchart](http://5.135.191.67/technicalflowchart.jpg "The Flowchart")
 
 #### Client-side
 
