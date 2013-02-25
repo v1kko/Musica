@@ -52,6 +52,7 @@
 
 * The playlist selection screen
 
+![Alt text](http://5.135.191.67/settings.png "The Settings Screen")
 
 * The settings screen
 
