@@ -48,13 +48,22 @@
 
 * The main screen
 
-![Alt text](http://5.135.191.67/main.png "The Main Screen")
+![Alt text](http://5.135.191.67/main1.png "The Main Screen")
+
+![Alt text](http://5.135.191.67/main2.png "The Main Screen")
 
 * The playlist selection screen
+
+![Alt text](http://5.135.191.67/playlist.png "The Playlist Screen")
+
+![Alt text](http://5.135.191.67/playlist1.png "The Playlist add Screen")
+
 
 * The settings screen
 
 ![Alt text](http://5.135.191.67/settings.png "The Settings Screen")
+
+![Alt text](http://5.135.191.67/server_select.png "The Server select Screen")
 
 # Musica Style Document
 
