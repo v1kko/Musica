@@ -1,0 +1,3 @@
+[submodule "daemon/musicapi"]
+	path = daemon/musicapi
+	url = git://github.com/jbremer/musicapi.git
