@@ -10,24 +10,34 @@ import android.widget.EditText;
 import uva.derp.Musica.Backend;
 
 public class Musica extends Activity {
-
+	
+	static Musica kanker;
+	private Backend be;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /* env shit */
+        final Backend be = new Backend("10.0.2.2"); 
+        this.be = be;
+        Musica.kanker=this;
+        /*/env */
         
-        final Backend be = new Backend("10.0.2.2");  
-        
-        
+        /* objects from xml */
         setContentView(R.layout.activity_musica);
-        Button play = (Button) findViewById(R.id.playbutton);
+        Button play   = (Button) findViewById(R.id.playbutton);
+        //Button rewind = (Button) findViewById(R.id.rewindbutton);
+        /*/objects */
+        
+        /* listeners */
         play.setOnClickListener(new View.OnClickListener() {
         	@Override
 			public void onClick(View v) {
         		be.toggleplay();
-				String result = be.playing ? "MUZIEK" : "STILTE";		
-				((EditText) findViewById(R.id.currentsongs)).setText(result);
 			}
 		});
+        /*/listeners*/
+        
     }
 
 
@@ -37,5 +47,13 @@ public class Musica extends Activity {
         getMenuInflater().inflate(R.menu.musica, menu);
         return true;
     }
+
+
+	public void krijgkanker(String javakanker, String result) {
+		if (javakanker.equals("toggleplaybutton")) {
+			String result1 = be.playing ? "MUZIEK" : "STILTE";
+			((EditText) findViewById(R.id.currentsongs)).setText(result1);
+		}
+	}
     
 }

@@ -3,7 +3,6 @@ package uva.derp.Musica;
 import java.io.*;
 import java.net.*;
 
-import android.R.integer;
 import android.os.AsyncTask;
 
 
@@ -23,9 +22,9 @@ public class Backend {
 	 */
 	public void toggleplay() {
 			if (this.playing)
-				new Javakanker().execute(server, "/stop");
+				new Javakanker().execute(server, "/stop", "toggleplaybutton");
 		    else 
-		    	new Javakanker().execute(server, "/play");
+		    	new Javakanker().execute(server, "/play", "toggleplaybutton");
 			this.playing = !this.playing;
 	}
 	
@@ -33,18 +32,19 @@ public class Backend {
 
 class Javakanker extends AsyncTask<String, Integer, String> {
 
+	String javakanker = "";
+
 	@Override
 	protected String doInBackground(String... params) {
 		if (params.length < 2)
 			return "exception";
 		String server = params[0];
 		String request = params[1];
+		if (params.length > 2)
+			this.javakanker = params[2];
 		
-		try {
-			
-	
+		try{
 		URL url = new URL("http", server, 9042,request, null);
-		
 		HttpURLConnection conn = ((HttpURLConnection) url.openConnection());
 		conn.setRequestMethod("GET");
 		BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -60,4 +60,8 @@ class Javakanker extends AsyncTask<String, Integer, String> {
 		}
 	}
 	
+	protected void onPostExecute(String result) {
+		Musica.kanker.krijgkanker(javakanker, result);
+	}
+
 }
