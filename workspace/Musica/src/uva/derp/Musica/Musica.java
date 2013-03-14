@@ -7,19 +7,25 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import uva.derp.Musica.Backend;
+
 public class Musica extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        final Backend be = new Backend("10.0.2.2");  
+        
+        
         setContentView(R.layout.activity_musica);
         Button play = (Button) findViewById(R.id.playbutton);
         play.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
+        	@Override
 			public void onClick(View v) {
-			((EditText) findViewById(R.id.currentsongs)).setText("Hello World");
-				
+        		be.toggleplay();
+				String result = be.playing ? "MUZIEK" : "STILTE";		
+				((EditText) findViewById(R.id.currentsongs)).setText(result);
 			}
 		});
     }
