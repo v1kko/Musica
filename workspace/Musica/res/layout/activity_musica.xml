@@ -4,38 +4,44 @@
     android:layout_height="match_parent"
     tools:context=".Musica" >
 
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" >
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/seekBar1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:ems="10"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:inputType="textMultiLine"
+            android:scrollbarAlwaysDrawVerticalTrack="true" />
 
-        <LinearLayout
-            android:layout_width="272dp"
-            android:layout_height="212dp"
-            android:orientation="vertical" >
+        <Button
+            android:id="@+id/prevbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seekBar1"
+            android:layout_toLeftOf="@+id/playbutton"
+            android:background="@drawable/prev_button_layer"
+            android:longClickable="true"
+            android:minHeight="80dip"
+            android:minWidth="80dip"
+            android:scrollbarAlwaysDrawVerticalTrack="true" />
 
-            <EditText
-                android:id="@+id/currentsongs"
-                android:layout_width="match_parent"
-                android:layout_height="213dp"
-                android:background="#01035c"
-                android:cursorVisible="false"
-                android:ems="10"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:inputType="none"
-                android:minHeight="160dip"
-                android:minWidth="80dip" >
-
-                <requestFocus />
-            </EditText>
-        </LinearLayout>
-
-
-    </ScrollView>
+        <Button
+            android:id="@+id/nextbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/playbutton"
+            android:layout_alignBottom="@+id/playbutton"
+            android:layout_toRightOf="@+id/playbutton"
+            android:background="@drawable/next_button_layer"
+            android:longClickable="true"
+            android:minHeight="80dip"
+            android:minWidth="80dip"
+            android:scrollbarAlwaysDrawVerticalTrack="true" />
 
         <Button
             android:id="@+id/playbutton"
@@ -43,10 +49,19 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="62dp"
+            android:layout_marginBottom="52dp"
             android:background="@drawable/play_button_layer"
             android:longClickable="true"
             android:minHeight="80dip"
-            android:minWidth="80dip" />
+            android:minWidth="80dip"
+            android:scrollbarAlwaysDrawVerticalTrack="true" />
+
+        <SeekBar
+            android:id="@+id/seekBar1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/nextbutton"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="14dp" />
 
 </RelativeLayout>

@@ -26,6 +26,8 @@ public class Musica extends Activity {
         /* objects from xml */
         setContentView(R.layout.activity_musica);
         Button play   = (Button) findViewById(R.id.playbutton);
+        Button next   = (Button) findViewById(R.id.nextbutton);
+        Button prev   = (Button) findViewById(R.id.prevbutton);
         //Button rewind = (Button) findViewById(R.id.rewindbutton);
         /*/objects */
         
@@ -34,6 +36,18 @@ public class Musica extends Activity {
         	@Override
 			public void onClick(View v) {
         		be.toggleplay();
+			}
+		});
+        next.setOnClickListener(new View.OnClickListener() {
+        	@Override
+			public void onClick(View v) {
+        		be.nexttrack();
+			}
+		});
+        prev.setOnClickListener(new View.OnClickListener() {
+        	@Override
+			public void onClick(View v) {
+        		be.prevtrack();
 			}
 		});
         /*/listeners*/

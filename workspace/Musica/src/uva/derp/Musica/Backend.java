@@ -21,11 +21,25 @@ public class Backend {
 	 * Return true on success, untrue on failure
 	 */
 	public void toggleplay() {
-			if (this.playing)
-				new Javakanker().execute(server, "/stop", "toggleplaybutton");
-		    else 
-		    	new Javakanker().execute(server, "/play", "toggleplaybutton");
-			this.playing = !this.playing;
+		if (this.playing)
+			new Javakanker().execute(server, "/stop", "toggleplaybutton");
+	    else 
+	    	new Javakanker().execute(server, "/play", "toggleplaybutton");
+		this.playing = !this.playing;
+	}
+	public void prevtrack() {
+		if (this.playing)
+			new Javakanker().execute(server, "/stop", "toggleplaybutton");
+	    else 
+	    	new Javakanker().execute(server, "/play", "toggleplaybutton");
+		this.playing = !this.playing;
+	}
+	public void nexttrack() {
+		if (this.playing)
+			new Javakanker().execute(server, "/stop", "toggleplaybutton");
+	    else 
+	    	new Javakanker().execute(server, "/play", "toggleplaybutton");
+		this.playing = !this.playing;
 	}
 	
 }
