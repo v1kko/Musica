@@ -49,6 +49,7 @@ class Javakanker extends AsyncTask<String, Integer, String> {
 
 	@Override
 	protected String doInBackground(String... params) {
+		String pass = "pass=password";
 		if (params.length < 2)
 			return "exception";
 		String server = params[0];
@@ -60,6 +61,10 @@ class Javakanker extends AsyncTask<String, Integer, String> {
 		URL url = new URL("http", server, 9042,request, null);
 		HttpURLConnection conn = ((HttpURLConnection) url.openConnection());
 		conn.setRequestMethod("POST");
+		DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
+		dos.writeBytes(pass);
+		dos.flush();
+		dos.close();
 		BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 		String result = "", line;
 		while ((line = rd.readLine()) != null) {

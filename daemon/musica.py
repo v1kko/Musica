@@ -1,5 +1,6 @@
 from bottle import abort, request, route, run
 import musicapi
+import json
 import sys
 
 
@@ -20,6 +21,9 @@ def authed_route(*args, **kwargs):
 def play():
     instance.play()
 
+@authed_route('/getcurrentsongs', method='POST')
+def getcurrentsongs():
+    return json.dumps({"currentsongs" : [ "A", "B,", "c", "One -Metallica", "Gangam Style - Psy", "Step One Two - Kaskade", "Bla", "Blalalalalala"]})
 
 @authed_route('/stop')
 def stop():

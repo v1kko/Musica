@@ -1,15 +1,18 @@
 package uva.derp.Musica;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.integer;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
+import android.util.Printer;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import uva.derp.Musica.Backend;
@@ -80,6 +83,7 @@ public class Musica extends Activity {
 		}
 		if (javakanker.equals("currentsongs")) {
 			JSONObject json;
+				Log.d("DBUG", result);
 			try {
 				json = new JSONObject(result);
 			} catch (JSONException e) {
@@ -88,7 +92,11 @@ public class Musica extends Activity {
 				return;
 			}
 			try {
-				this.currentsongs = (String[]) json.get("currentsongs");
+				JSONArray bla = (JSONArray) json.get("currentsongs");
+				this.currentsongs = new String[bla.length()];
+				for (int i = 0; i < bla.length(); i++){
+					this.currentsongs[i]= bla.getString(i); 
+				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
