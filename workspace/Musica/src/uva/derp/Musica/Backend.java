@@ -20,28 +20,27 @@ public class Backend {
 	/*
 	 * Return true on success, untrue on failure
 	 */
-	public void toggleplay() {
-		if (this.playing)
-			new Javakanker().execute(server, "/stop", "toggleplaybutton");
-	    else 
-	    	new Javakanker().execute(server, "/play", "toggleplaybutton");
-		this.playing = !this.playing;
-	}
-	public void prevtrack() {
-		if (this.playing)
-			new Javakanker().execute(server, "/stop", "toggleplaybutton");
-	    else 
-	    	new Javakanker().execute(server, "/play", "toggleplaybutton");
-		this.playing = !this.playing;
-	}
-	public void nexttrack() {
-		if (this.playing)
-			new Javakanker().execute(server, "/stop", "toggleplaybutton");
-	    else 
-	    	new Javakanker().execute(server, "/play", "toggleplaybutton");
-		this.playing = !this.playing;
+	public void toggleplay()  {
+			if (this.playing)
+				new Javakanker().execute(server, "/stop", "toggleplaybutton");
+		    else 
+		    	new Javakanker().execute(server, "/play", "toggleplaybutton");
+			this.playing = !this.playing;
 	}
 	
+	public void prevtrack()  {
+			new Javakanker().execute(server, "/prev", "prev");
+	}
+	
+	public void nexttrack()  {
+			new Javakanker().execute(server, "/next", "next");
+	}
+
+	public String[] getcurrentsongs() {
+		new Javakanker().execute(server, "/getcurrentsongs", "currentsongs");
+		// TODO Auto- method stub
+		return null;
+	}
 }
 
 class Javakanker extends AsyncTask<String, Integer, String> {
@@ -60,7 +59,7 @@ class Javakanker extends AsyncTask<String, Integer, String> {
 		try{
 		URL url = new URL("http", server, 9042,request, null);
 		HttpURLConnection conn = ((HttpURLConnection) url.openConnection());
-		conn.setRequestMethod("GET");
+		conn.setRequestMethod("POST");
 		BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 		String result = "", line;
 		while ((line = rd.readLine()) != null) {
