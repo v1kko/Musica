@@ -5,6 +5,6 @@
     <item android:drawable="@drawable/play_button_top" 
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="100dp"
+        android:layout_marginLeft="115dp"
     />
 </layer-list>

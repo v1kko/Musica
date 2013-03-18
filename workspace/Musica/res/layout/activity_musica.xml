@@ -4,44 +4,26 @@
     android:layout_height="match_parent"
     tools:context=".Musica" >
 
-        <EditText
-            android:id="@+id/editText1"
-            android:layout_width="wrap_content"
+        <ListView
+            android:id="@+id/currentsongs"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/seekBar1"
+            android:layout_above="@+id/seekbar"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:ems="10"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:inputType="textMultiLine"
-            android:scrollbarAlwaysDrawVerticalTrack="true" />
+            android:layout_marginBottom="2dp" >
 
-        <Button
-            android:id="@+id/prevbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/seekBar1"
-            android:layout_toLeftOf="@+id/playbutton"
-            android:background="@drawable/prev_button_layer"
-            android:longClickable="true"
-            android:minHeight="80dip"
-            android:minWidth="80dip"
-            android:scrollbarAlwaysDrawVerticalTrack="true" />
+        </ListView>
 
-        <Button
-            android:id="@+id/nextbutton"
-            android:layout_width="wrap_content"
+        <SeekBar
+            android:id="@+id/seekbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/playbutton"
-            android:layout_alignBottom="@+id/playbutton"
-            android:layout_toRightOf="@+id/playbutton"
-            android:background="@drawable/next_button_layer"
-            android:longClickable="true"
-            android:minHeight="80dip"
-            android:minWidth="80dip"
-            android:scrollbarAlwaysDrawVerticalTrack="true" />
+            android:layout_above="@+id/playbutton"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="41dp" />
 
         <Button
             android:id="@+id/playbutton"
@@ -52,16 +34,69 @@
             android:layout_marginBottom="52dp"
             android:background="@drawable/play_button_layer"
             android:longClickable="true"
-            android:minHeight="80dip"
-            android:minWidth="80dip"
-            android:scrollbarAlwaysDrawVerticalTrack="true" />
+            android:minHeight="115dip"
+            android:minWidth="115dip" />
 
-        <SeekBar
-            android:id="@+id/seekBar1"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/nextbutton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/nextbutton"
-            android:layout_alignParentLeft="true"
-            android:layout_marginBottom="14dp" />
+            android:layout_alignTop="@+id/playbutton"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="50dp"
+            android:layout_toRightOf="@+id/playbutton"
+            android:background="@drawable/next_button_layer"
+            android:longClickable="true"
+            android:minHeight="80dip"
+            android:minWidth="80dip" />
+
+        <Button
+            android:id="@+id/settingsbutton"
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:layout_alignLeft="@+id/playbutton"
+            android:layout_alignTop="@+id/playbutton"
+            android:layout_marginLeft="-70dp"
+            android:layout_marginTop="-28dp"
+            android:background="@drawable/settings_button_layer"
+            android:longClickable="true"
+            android:minHeight="50dip"
+            android:minWidth="50dip" />
+
+        <Button
+            android:id="@+id/prevbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/playbutton"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="50dp"
+            android:layout_toLeftOf="@+id/playbutton"
+            android:background="@drawable/prev_button_layer"
+            android:longClickable="true"
+            android:minHeight="80dip"
+            android:minWidth="80dip" />
+
+        <Button
+            android:id="@+id/listbutton"
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:layout_alignRight="@+id/playbutton"
+            android:layout_alignTop="@+id/playbutton"
+            android:layout_marginRight="-70dp"
+            android:layout_marginTop="-28dp"
+            android:background="@drawable/list_button_layer"
+            android:longClickable="true"
+            android:minHeight="50dip"
+            android:minWidth="50dip" />
+
+        <ProgressBar
+            android:id="@+id/volumebar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/prevbutton"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/nextbutton"
+            android:layout_marginBottom="12dp" />
 
 </RelativeLayout>
