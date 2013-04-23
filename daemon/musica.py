@@ -17,7 +17,7 @@ def authed_route(*args, **kwargs):
     return decorator
 
 
-@authed_route('/play')
+@authed_route('/play', method='POST')
 def play():
     instance.play()
 
@@ -25,7 +25,7 @@ def play():
 def getcurrentsongs():
     return json.dumps({"currentsongs" : [ "A", "B,", "c", "One -Metallica", "Gangam Style - Psy", "Step One Two - Kaskade", "Bla", "Blalalalalala"]})
 
-@authed_route('/stop')
+@authed_route('/stop', method='POST')
 def stop():
     instance.stop()
 
