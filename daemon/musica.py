@@ -5,6 +5,7 @@ import sys
 
 
 def authed_route(*args, **kwargs):
+    """Authenticated route."""
     def decorator(fn):
         rt = route(*args, **kwargs)
 
@@ -17,15 +18,21 @@ def authed_route(*args, **kwargs):
     return decorator
 
 
-@authed_route('/play', method='POST')
+def authed_any_route(*args, **kwargs):
+    """Authed Route which supports GET and POST requests."""
+    return authed_route(*args, method=['GET', 'POST'], **kwargs)
+
+
+@authed_any_route('/play')
 def play():
     instance.play()
 
-@authed_route('/getcurrentsongs', method='POST')
+
+@authed_any_route('/getcurrentsongs')
 def getcurrentsongs():
     return json.dumps({"currentsongs" : [ "A", "B,", "c", "One -Metallica", "Gangam Style - Psy", "Step One Two - Kaskade", "Bla", "Blalalalalala"]})
 
-@authed_route('/stop', method='POST')
+@authed_any_route('/stop')
 def stop():
     instance.stop()
 
