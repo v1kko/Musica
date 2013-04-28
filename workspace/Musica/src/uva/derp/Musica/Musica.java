@@ -19,7 +19,7 @@ import uva.derp.Musica.Backend;
 
 public class Musica extends Activity {
 	
-	static Musica kanker;
+	static Musica callback;
 	private Backend be;
 	private String[] currentsongs;
 	
@@ -29,7 +29,7 @@ public class Musica extends Activity {
         /* env shit */
         final Backend be = new Backend("10.0.2.2"); 
         this.be = be;
-        Musica.kanker=this;
+        Musica.callback=this;
         /*/env */
         
         /* Init */
@@ -76,12 +76,12 @@ public class Musica extends Activity {
     }
 
 
-	public void krijgkanker(String javakanker, String result) {
-		if (javakanker.equals("toggleplaybutton")) {
+	public void getcallback(String postexecute, String result) {
+		if (postexecute.equals("toggleplaybutton")) {
 			String result1 = be.playing ? "MUZIEK" : "STILTE";
 			//((ListView) findViewById(R.id.currentsongs));
 		}
-		if (javakanker.equals("currentsongs")) {
+		if (postexecute.equals("currentsongs")) {
 			JSONObject json;
 				Log.d("DBUG", result);
 			try {
@@ -89,6 +89,7 @@ public class Musica extends Activity {
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				
 				return;
 			}
 			try {

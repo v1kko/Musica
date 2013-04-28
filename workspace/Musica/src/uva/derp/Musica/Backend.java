@@ -3,6 +3,7 @@ package uva.derp.Musica;
 import java.io.*;
 import java.net.*;
 
+import android.R.integer;
 import android.os.AsyncTask;
 
 
@@ -22,30 +23,39 @@ public class Backend {
 	 */
 	public void toggleplay()  {
 			if (this.playing)
-				new Javakanker().execute(server, "/stop", "toggleplaybutton");
+				new Query().execute(server, "/stop", "toggleplaybutton");
 		    else 
-		    	new Javakanker().execute(server, "/play", "toggleplaybutton");
+		    	new Query().execute(server, "/play", "toggleplaybutton");
 			this.playing = !this.playing;
 	}
 	
 	public void prevtrack()  {
-			new Javakanker().execute(server, "/prev", "prev");
+			new Query().execute(server, "/prev", "prev");
 	}
 	
 	public void nexttrack()  {
-			new Javakanker().execute(server, "/next", "next");
+			new Query().execute(server, "/next", "next");
+	}
+	
+	public void getvolume()  {
+			new Query().execute(server, "/getvolume", "getvolume");
 	}
 
+	public void setvolume(Integer noise)  {
+		noise = noise < 0 ? 0 : noise > 100 ? 100 : noise;
+			new Query().execute(server, "/setvolume/" + noise.toString(), "getvolume");
+	}
+	
 	public String[] getcurrentsongs() {
-		new Javakanker().execute(server, "/getcurrentsongs", "currentsongs");
+		new Query().execute(server, "/getcurrentsongs", "currentsongs");
 		// TODO Auto- method stub
 		return null;
 	}
 }
 
-class Javakanker extends AsyncTask<String, Integer, String> {
+class Query extends AsyncTask<String, Integer, String> {
 
-	String javakanker = "";
+	String postexecute = "";
 
 	@Override
 	protected String doInBackground(String... params) {
@@ -55,7 +65,7 @@ class Javakanker extends AsyncTask<String, Integer, String> {
 		String server = params[0];
 		String request = params[1];
 		if (params.length > 2)
-			this.javakanker = params[2];
+			this.postexecute = params[2];
 		
 		try{
 		URL url = new URL("http", server, 9042,request, null);
@@ -79,7 +89,7 @@ class Javakanker extends AsyncTask<String, Integer, String> {
 	}
 	
 	protected void onPostExecute(String result) {
-		Musica.kanker.krijgkanker(javakanker, result);
+		Musica.callback.getcallback(postexecute, result);
 	}
 
 }
