@@ -28,13 +28,45 @@ def play():
     instance.play()
 
 
+@authed_any_route('/pause')
+def pause():
+    instance.pause()
+
+
+@authed_any_route('/resume')
+def resume():
+    instance.play()
+
+
 @authed_any_route('/getcurrentsongs')
 def getcurrentsongs():
     return json.dumps({"currentsongs" : [ "A", "B,", "c", "One -Metallica", "Gangam Style - Psy", "Step One Two - Kaskade", "Bla", "Blalalalalala"]})
 
+
 @authed_any_route('/stop')
 def stop():
     instance.stop()
+
+
+@authed_any_route('/next')
+def next_song():
+    instance.next()
+
+
+@authed_any_route('/prev')
+def prev_song():
+    instance.prev()
+
+
+@authed_any_route('/volume')
+def get_volume():
+    return instance.volume()
+
+
+@authed_any_route('/volume/<volume>')
+def set_volume(volume):
+    return instance.volume(volume)
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:

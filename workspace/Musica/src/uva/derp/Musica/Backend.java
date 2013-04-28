@@ -68,7 +68,7 @@ class Query extends AsyncTask<String, Integer, String> {
 			this.postexecute = params[2];
 		
 		try{
-		URL url = new URL("http", server, 9042,request, null);
+		URL url = new URL("http", server, 9042,request + "?" + pass, null);
 		HttpURLConnection conn = ((HttpURLConnection) url.openConnection());
 		conn.setRequestMethod("POST");
 		DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
