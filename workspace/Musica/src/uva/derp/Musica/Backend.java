@@ -3,8 +3,8 @@ package uva.derp.Musica;
 import java.io.*;
 import java.net.*;
 
-import android.R.integer;
 import android.os.AsyncTask;
+import android.util.Log;
 
 
 public class Backend {
@@ -15,7 +15,7 @@ public class Backend {
 	public Backend(String server) {
 		/* Create backend real OOP style */
 		this.server = server;
-		this.playing = false;
+		this.playing = true;
 	}
 	
 	/*

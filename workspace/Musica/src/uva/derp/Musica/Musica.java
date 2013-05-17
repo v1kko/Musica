@@ -4,11 +4,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.integer;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
-import android.util.Printer;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,20 +15,22 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import uva.derp.Musica.Backend;
+import uva.derp.Musica.Settings;
 
 public class Musica extends Activity {
 	
 	static Musica callback;
 	private Backend be;
+	private Settings se;
 	private String[] currentsongs;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /* env shit */
-        final Backend be = new Backend("10.0.2.2"); 
-        this.be = be;
+        /* env */
+        be = new Backend("10.0.2.2"); 
         Musica.callback=this;
+        be.toggleplay();
         /*/env */
         
         /* Init */
@@ -42,6 +43,7 @@ public class Musica extends Activity {
         Button play   = (Button) findViewById(R.id.playbutton);
         Button next   = (Button) findViewById(R.id.nextbutton);
         Button prev   = (Button) findViewById(R.id.prevbutton);
+        Button settings   = (Button) findViewById(R.id.settingsbutton);
         /*/objects */
         
         /* listeners */
@@ -63,10 +65,17 @@ public class Musica extends Activity {
         		be.prevtrack();
 			}
 		});
+        
+        settings.setOnClickListener(new View.OnClickListener() {
+        	@Override
+			public void onClick(View v) {
+        		Intent intent = new Intent(v.getContext(), Settings.class);
+        		startActivity(intent);
+			}
+		});
         /*/listeners*/
         
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -78,8 +87,14 @@ public class Musica extends Activity {
 
 	public void getcallback(String postexecute, String result) {
 		if (postexecute.equals("toggleplaybutton")) {
-			String result1 = be.playing ? "MUZIEK" : "STILTE";
-			//((ListView) findViewById(R.id.currentsongs));
+	        Button play   = (Button) findViewById(R.id.playbutton);
+			if (be.playing)
+			{
+		        play.setBackgroundResource(R.drawable.pause_button_layer);
+			}
+			else {
+				play.setBackgroundResource(R.drawable.play_button_layer);
+			}
 		}
 		if (postexecute.equals("currentsongs")) {
 			JSONObject json;
