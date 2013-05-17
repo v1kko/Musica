@@ -1,11 +1,16 @@
 package uva.derp.Musica;
 
+import java.security.PublicKey;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
@@ -23,14 +28,28 @@ public class Musica extends Activity {
 	private Backend be;
 	private Settings se;
 	private String[] currentsongs;
+	static public AlertDialog wrongsettings;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /* env */
-        be = new Backend("10.0.2.2"); 
+        be = new Backend(this); 
         Musica.callback=this;
         be.toggleplay();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your server settings don't seem right, please change them");
+        builder.setNeutralButton("OK", new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+        		Intent intent = new Intent(findViewById(R.id.settingsbutton).getContext(), Settings.class);
+        		startActivity(intent);
+				
+			}
+		});
+        wrongsettings = builder.create();
         /*/env */
         
         /* Init */
@@ -86,6 +105,9 @@ public class Musica extends Activity {
 
 
 	public void getcallback(String postexecute, String result) {
+		if (result.equals("exception")){
+			wrongsettings.show();
+		}
 		if (postexecute.equals("toggleplaybutton")) {
 	        Button play   = (Button) findViewById(R.id.playbutton);
 			if (be.playing)
@@ -102,7 +124,7 @@ public class Musica extends Activity {
 			try {
 				json = new JSONObject(result);
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
+							// TODO Auto-generated catch block
 				e.printStackTrace();
 				
 				return;

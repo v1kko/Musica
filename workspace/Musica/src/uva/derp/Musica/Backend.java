@@ -3,19 +3,27 @@ package uva.derp.Musica;
 import java.io.*;
 import java.net.*;
 
+import android.R.integer;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 
 public class Backend {
 
 	private String server;
+	static int port;
+	static String password;
 	public boolean playing;
 		
-	public Backend(String server) {
+	public Backend(Context cxt) {
 		/* Create backend real OOP style */
-		this.server = server;
-		this.playing = true;
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(cxt);
+		password = prefs.getString("password", "password");
+		port = Integer.parseInt(prefs.getString("port", "9042"));
+		server = prefs.getString("server", "10.1.1.2");
 	}
 	
 	/*
@@ -59,7 +67,8 @@ class Query extends AsyncTask<String, Integer, String> {
 
 	@Override
 	protected String doInBackground(String... params) {
-		String pass = "pass=password";
+		String pass = "pass=" + Backend.password;
+		Log.d("DBUG", Integer.toString(params.length));
 		if (params.length < 2)
 			return "exception";
 		String server = params[0];
@@ -68,7 +77,7 @@ class Query extends AsyncTask<String, Integer, String> {
 			this.postexecute = params[2];
 		
 		try{
-		URL url = new URL("http", server, 9042,request + "?" + pass, null);
+		URL url = new URL("http", server, Backend.port ,request + "?" + pass, null);
 		HttpURLConnection conn = ((HttpURLConnection) url.openConnection());
 		conn.setRequestMethod("POST");
 		DataOutputStream dos = new DataOutputStream(conn.getOutputStream());

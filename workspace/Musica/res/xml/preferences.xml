@@ -1,0 +1,29 @@
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+            android:title="Server Settings">
+	<EditTextPreference
+	    		android:key="server"
+	    		android:title="Server Address"
+	    		android:summary="None"
+	    		android:dialogTitle="Set server Address" />
+	
+	<EditTextPreference
+	    		android:key="port"
+	    		android:title="Port"
+	    		android:summary="None"
+	    		android:dialogTitle="Set server Port" />
+<EditTextPreference
+	    		android:key="password"
+	    		android:title="Password"
+	    		android:summary="None"
+	    		android:dialogTitle="Set Password" />
+	
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="Client Settings">
+    </PreferenceCategory>
+
+</PreferenceScreen>
