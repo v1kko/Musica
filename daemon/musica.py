@@ -4,66 +4,70 @@ import json
 import sys
 
 
-def authed_route(*args, **kwargs):
+def authed_route(path, method):
     """Authenticated route."""
     def decorator(fn):
-        rt = route(*args, **kwargs)
+        rt = route(path, method=method)
 
         def wrapper(*args, **kwargs):
             if request.params.get('pass') != password:
                 abort(403, 'You are not authorized to do this.')
-            return fn()
+            return fn(*args, **kwargs)
 
         return rt(wrapper)
     return decorator
 
 
-def authed_any_route(*args, **kwargs):
-    """Authed Route which supports GET and POST requests."""
-    return authed_route(*args, method=['GET', 'POST'], **kwargs)
-
-
-@authed_any_route('/play')
+@authed_route('/play', 'GET')
+@authed_route('/play', 'POST')
 def play():
     instance.play()
 
 
-@authed_any_route('/pause')
+@authed_route('/pause', 'GET')
+@authed_route('/pause', 'POST')
 def pause():
     instance.pause()
 
 
-@authed_any_route('/resume')
+@authed_route('/resume', 'GET')
+@authed_route('/resume', 'POST')
 def resume():
     instance.play()
 
 
-@authed_any_route('/getcurrentsongs')
+@authed_route('/currentsongs', 'GET')
+@authed_route('/currentsongs', 'POST')
 def getcurrentsongs():
     return json.dumps({"currentsongs" : [ "A", "B,", "c", "One -Metallica", "Gangam Style - Psy", "Step One Two - Kaskade", "Bla", "Blalalalalala"]})
 
 
-@authed_any_route('/stop')
+@authed_route('/stop', 'GET')
+@authed_route('/stop', 'POST')
 def stop():
     instance.stop()
 
 
-@authed_any_route('/next')
+@authed_route('/next', 'GET')
+@authed_route('/next', 'POST')
 def next_song():
     instance.next()
 
 
-@authed_any_route('/prev')
+@authed_route('/prev', 'GET')
+@authed_route('/prev', 'POST')
 def prev_song():
     instance.prev()
 
 
-@authed_any_route('/volume')
+@authed_route('/volume', 'GET')
+@authed_route('/volume', 'POST')
 def get_volume():
-    return instance.volume()
+    return str(instance.volume())
 
 
-@authed_any_route('/volume/<volume>')
+@authed_route('/volume/<volume:int>', 'GET')
+@authed_route('/volume/<volume:int>', 'POST')
 def set_volume(volume):
     return instance.volume(volume)
 
