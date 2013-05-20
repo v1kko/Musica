@@ -46,6 +46,13 @@ public class Settings extends PreferenceActivity implements
         getPreferenceScreen().getSharedPreferences()
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
+    
+    public void onBackPressed() {
+    	Musica.callback.be = new Backend(Musica.cxt);
+        Musica.callback.be.getcurrentsongs();
+        Musica.callback.be.getcurrentsong();
+    	super.onBackPressed();
+    }
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
             String key) {

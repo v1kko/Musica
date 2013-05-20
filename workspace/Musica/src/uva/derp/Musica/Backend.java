@@ -31,33 +31,50 @@ public class Backend {
 	 */
 	public void toggleplay()  {
 			if (this.playing)
-				new Query().execute(server, "/stop", "toggleplaybutton");
+				new Query().execute(server, "/pause", "toggleplaybutton");
 		    else 
 		    	new Query().execute(server, "/play", "toggleplaybutton");
 			this.playing = !this.playing;
+			this.always();
 	}
 	
+	private void always() {
+			this.getcurrentsongs();
+			this.getcurrentsong();
+	}
+
 	public void prevtrack()  {
 			new Query().execute(server, "/prev", "prev");
+			this.always();
 	}
 	
 	public void nexttrack()  {
 			new Query().execute(server, "/next", "next");
+			this.always();
 	}
 	
 	public void getvolume()  {
 			new Query().execute(server, "/getvolume", "getvolume");
+			this.always();
 	}
 
 	public void setvolume(Integer noise)  {
 		noise = noise < 0 ? 0 : noise > 100 ? 100 : noise;
 			new Query().execute(server, "/setvolume/" + noise.toString(), "getvolume");
+			this.always();
 	}
 	
 	public String[] getcurrentsongs() {
 		new Query().execute(server, "/getcurrentsongs", "currentsongs");
 		// TODO Auto- method stub
 		return null;
+	}
+	
+	public String[] getcurrentsong() {
+		new Query().execute(server, "/getcurrentsong", "currentsong");
+		// TODO Auto- method stub
+		return null;
+		
 	}
 }
 
@@ -68,7 +85,6 @@ class Query extends AsyncTask<String, Integer, String> {
 	@Override
 	protected String doInBackground(String... params) {
 		String pass = "pass=" + Backend.password;
-		Log.d("DBUG", Integer.toString(params.length));
 		if (params.length < 2)
 			return "exception";
 		String server = params[0];
@@ -91,6 +107,9 @@ class Query extends AsyncTask<String, Integer, String> {
 		}
 		rd.close();
 		return result;
+		} catch (FileNotFoundException e){
+			e.printStackTrace();
+			return "exception1";
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "exception";

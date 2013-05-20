@@ -5,10 +5,13 @@ import java.security.PublicKey;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
+import android.R.integer;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -25,15 +28,20 @@ import uva.derp.Musica.Settings;
 public class Musica extends Activity {
 	
 	static Musica callback;
-	private Backend be;
+	static Context cxt;
+	Backend be;
 	private Settings se;
 	private String[] currentsongs;
+	private String currentsong;
+	private ListView listView;
 	static public AlertDialog wrongsettings;
+	static public AlertDialog wrongserver;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /* env */
+        cxt = this;
         be = new Backend(this); 
         Musica.callback=this;
         be.toggleplay();
@@ -50,11 +58,16 @@ public class Musica extends Activity {
 			}
 		});
         wrongsettings = builder.create();
+        builder.setMessage("Your server doesn't support the whole API, please update");
+        builder.setNeutralButton("OK", new OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
+        wrongserver = builder.create();
         /*/env */
         
         /* Init */
         be.getcurrentsongs();
-        
         /*/Init */
         
         /* objects from xml */
@@ -107,6 +120,11 @@ public class Musica extends Activity {
 	public void getcallback(String postexecute, String result) {
 		if (result.equals("exception")){
 			wrongsettings.show();
+			be.playing = false;
+		}
+		if (result.equals("exception1")){
+			wrongserver.show();
+			be.playing = false;
 		}
 		if (postexecute.equals("toggleplaybutton")) {
 	        Button play   = (Button) findViewById(R.id.playbutton);
@@ -120,7 +138,6 @@ public class Musica extends Activity {
 		}
 		if (postexecute.equals("currentsongs")) {
 			JSONObject json;
-				Log.d("DBUG", result);
 			try {
 				json = new JSONObject(result);
 			} catch (JSONException e) {
@@ -140,10 +157,39 @@ public class Musica extends Activity {
 				e.printStackTrace();
 				return;
 			}
-	        ListView currentsongs = (ListView) findViewById(R.id.currentsongs);
+	        listView = (ListView) findViewById(R.id.currentsongs);
 	        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,this.currentsongs);
-	        currentsongs.setAdapter(adapter);
+	        listView.setAdapter(adapter);
+		}
+		if (postexecute.equals("currentsong")) {
+			JSONObject json;
+			try {
+				json = new JSONObject(result);
+				this.currentsong = (String) json.get("currentsong");
+		        for(int i = 0 ; i < this.currentsongs.length ; i ++ ){
+		       		if (this.currentsongs[i].equals(this.currentsong) )
+		       		{
+		       			Log.d("DBUG", Integer.toString(i));
+		       			listView.setFocusable(true);
+		       			listView.setFocusableInTouchMode(true);
+		       			//Oh android .... 
+		       			//listView.setItemChecked(i, true);
+		       			listView.setSelection(i);
+		       			
+		       			//listView.requestChildFocus(listView.getChildAt(i), listView);
+		       			//listView.performItemClick(listView, i, listView.getItemIdAtPosition(i));
+		       			//listView.setActivated(true);
+		       			//listView.getChildAt(i).performClick();
+		       			//listView.performItemClick(listView.getAdapter().getView(i, null, null), i, listView.getAdapter().getItemId(i));
+		       			listView.getChildAt(i).setBackgroundColor(0x6f6fff);
+		       			//listView.getAdapter().getView(i, null, null).setBackgroundColor(0x6f6fff);
+		       			//listView.invalidateViews();
+		       		}
+		       	}
+			} catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
 		}
 	}
-    
-}
+	}
