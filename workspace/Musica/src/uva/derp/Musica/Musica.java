@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.json.JSONStringer;
 
 import android.R.integer;
+import android.media.MediaRouter.VolumeCallback;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,9 +22,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import uva.derp.Musica.Backend;
 import uva.derp.Musica.Settings;
+import uva.derp.Musica.extraClass;
 
 public class Musica extends Activity {
 	
@@ -33,6 +37,7 @@ public class Musica extends Activity {
 	private Settings se;
 	private String[] currentsongs;
 	private String currentsong;
+	private SeekBar volume;
 	private ListView listView;
 	static public AlertDialog wrongsettings;
 	static public AlertDialog wrongserver;
@@ -76,9 +81,13 @@ public class Musica extends Activity {
         Button next   = (Button) findViewById(R.id.nextbutton);
         Button prev   = (Button) findViewById(R.id.prevbutton);
         Button settings   = (Button) findViewById(R.id.settingsbutton);
+        volume = (SeekBar) findViewById(R.id.volumebar);
+        volume.setMax(100);
         /*/objects */
         
         /* listeners */
+        volume.setOnSeekBarChangeListener(new extraClass());
+        
         play.setOnClickListener(new View.OnClickListener() {
         	@Override
 			public void onClick(View v) {
@@ -150,7 +159,7 @@ public class Musica extends Activity {
 				JSONArray bla = (JSONArray) json.get("currentsongs");
 				this.currentsongs = new String[bla.length()];
 				for (int i = 0; i < bla.length(); i++){
-					this.currentsongs[i]= bla.getString(i); 
+					this.currentsongs[i]= bla.getJSONArray(i).getString(1); 
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -191,5 +200,35 @@ public class Musica extends Activity {
 				return;
 			}
 		}
+		if (postexecute.equals("getvolume"))
+		{
+			try {
+			this.volume.setProgress(Integer.parseInt(result));
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
 	}
+}
+
+class extraClass implements OnSeekBarChangeListener{
+
+	@Override
+	public void onProgressChanged(SeekBar seekBar, int progress,
+			boolean fromUser) {
+		Musica.callback.be.setvolume(progress);
 	}
+
+	@Override
+	public void onStartTrackingTouch(SeekBar seekBar) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStopTrackingTouch(SeekBar seekBar) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}

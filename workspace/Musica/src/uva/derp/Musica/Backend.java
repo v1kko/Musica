@@ -40,7 +40,7 @@ public class Backend {
 	
 	private void always() {
 			this.getcurrentsongs();
-			this.getcurrentsong();
+			this.getvolume();
 	}
 
 	public void prevtrack()  {
@@ -54,13 +54,12 @@ public class Backend {
 	}
 	
 	public void getvolume()  {
-			new Query().execute(server, "/getvolume", "getvolume");
-			this.always();
+			new Query().execute(server, "/volume", "getvolume");
 	}
 
 	public void setvolume(Integer noise)  {
 		noise = noise < 0 ? 0 : noise > 100 ? 100 : noise;
-			new Query().execute(server, "/setvolume/" + noise.toString(), "getvolume");
+			new Query().execute(server, "/volume/" + noise.toString(), "getvolume");
 			this.always();
 	}
 	
@@ -68,13 +67,6 @@ public class Backend {
 		new Query().execute(server, "/getcurrentsongs", "currentsongs");
 		// TODO Auto- method stub
 		return null;
-	}
-	
-	public String[] getcurrentsong() {
-		new Query().execute(server, "/getcurrentsong", "currentsong");
-		// TODO Auto- method stub
-		return null;
-		
 	}
 }
 

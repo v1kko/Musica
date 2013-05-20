@@ -18,7 +18,7 @@
         </ListView>
 
         <SeekBar
-            android:id="@+id/seekbar"
+            android:id="@+id/volumebar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/playbutton"
@@ -90,7 +90,7 @@
             android:minWidth="50dip" />
 
         <ProgressBar
-            android:id="@+id/volumebar"
+            android:id="@+id/seekbar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

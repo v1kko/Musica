@@ -21,14 +21,12 @@ def authed_route(path, method):
 @authed_route('/play', 'GET')
 @authed_route('/play', 'POST')
 def play():
-    return "OK"
     instance.play()
 
 
 @authed_route('/pause', 'GET')
 @authed_route('/pause', 'POST')
 def pause():
-    return "OK"
     instance.pause()
 
 
@@ -42,10 +40,6 @@ def resume():
 @authed_route('/currentsongs', 'POST')
 def getcurrentsongs():
     return json.dumps(currentsongs)
-
-@authed_any_route('/getcurrentsong')
-def getcurrentsongs():
-    return json.dumps({"currentsong" : "One -Metallica"})
 
 @authed_route('/stop', 'GET')
 @authed_route('/stop', 'POST')

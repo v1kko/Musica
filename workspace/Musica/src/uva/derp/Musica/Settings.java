@@ -50,7 +50,6 @@ public class Settings extends PreferenceActivity implements
     public void onBackPressed() {
     	Musica.callback.be = new Backend(Musica.cxt);
         Musica.callback.be.getcurrentsongs();
-        Musica.callback.be.getcurrentsong();
     	super.onBackPressed();
     }
 
