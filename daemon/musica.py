@@ -39,7 +39,7 @@ def resume():
 @authed_route('/currentsongs', 'GET')
 @authed_route('/currentsongs', 'POST')
 def getcurrentsongs():
-    return json.dumps({"currentsongs" : [ "A", "B,", "c", "One -Metallica", "Gangam Style - Psy", "Step One Two - Kaskade", "Bla", "Blalalalalala"]})
+    return json.dumps(currentsongs)
 
 
 @authed_route('/stop', 'GET')
@@ -77,7 +77,19 @@ if __name__ == '__main__':
         print 'Usage: python %s <password>' % sys.argv[0]
         exit(0)
 
+    print '[+] Starting Musica HTTP Daemon'
+    print '[x] Please wait while we load the playlist'
+
     instance = musicapi.instance('iTunes')
     password = sys.argv[1]
+
+    playlist = instance.current_playlist
+
+    print '[x] Please wait while we process all tracks in the playlist'
+
+    currentsongs = [(x.artist, x.album, x.name, x.duration)
+                    for x in playlist.tracks]
+
+    print '[x] Good to go!'
 
     run(port=9042)
