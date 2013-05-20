@@ -12,8 +12,9 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="2dp" >
-
+            android:layout_marginBottom="2dp"
+            android:choiceMode="singleChoice" 
+            android:listSelector="#6f6fff">
         </ListView>
 
         <SeekBar
@@ -32,7 +33,6 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="52dp"
-            android:background="@drawable/play_button_layer"
             android:longClickable="true"
             android:minHeight="115dip"
             android:minWidth="115dip" />

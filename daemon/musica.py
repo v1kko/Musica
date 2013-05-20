@@ -25,11 +25,13 @@ def authed_any_route(*args, **kwargs):
 
 @authed_any_route('/play')
 def play():
+    return "OK"
     instance.play()
 
 
 @authed_any_route('/pause')
 def pause():
+    return "OK"
     instance.pause()
 
 
@@ -42,6 +44,9 @@ def resume():
 def getcurrentsongs():
     return json.dumps({"currentsongs" : [ "A", "B,", "c", "One -Metallica", "Gangam Style - Psy", "Step One Two - Kaskade", "Bla", "Blalalalalala"]})
 
+@authed_any_route('/getcurrentsong')
+def getcurrentsongs():
+    return json.dumps({"currentsong" : "One -Metallica"})
 
 @authed_any_route('/stop')
 def stop():
