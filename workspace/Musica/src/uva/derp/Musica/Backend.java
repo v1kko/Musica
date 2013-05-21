@@ -62,6 +62,7 @@ public class Backend {
 	
 	public String[] getcurrentsongs() {
 		new Query().execute(server, "/currentsongs", "currentsongs");
+		new Query().execute(server, "/currentsong", "currentsong");
 		// TODO Auto- method stub
 		return null;
 	}

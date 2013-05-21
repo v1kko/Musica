@@ -169,7 +169,36 @@ public class Musica extends Activity {
 	        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,this.currentsongs);
 	        listView.setAdapter(adapter);
 		}
-		
+		if (postexecute.equals("currentsong")) {
+			JSONArray json;
+			try {
+				json = new JSONArray(result);
+				this.currentsong = (String) json.getString(2);
+		        for(int i = 0 ; i < this.currentsongs.length ; i ++ ){
+		       		if (this.currentsongs[i].equals(this.currentsong) )
+		       		{
+		       			Log.d("DBUG", Integer.toString(i));
+		       			listView.setFocusable(true);
+		       			listView.setFocusableInTouchMode(true);
+		       			//Oh android .... 
+		       			//listView.setItemChecked(i, true);
+		       			listView.setSelection(i);
+		       			
+		       			//listView.requestChildFocus(listView.getChildAt(i), listView);
+		       			//listView.performItemClick(listView, i, listView.getItemIdAtPosition(i));
+		       			//listView.setActivated(true);
+		       			//listView.getChildAt(i).performClick();
+		       			//listView.performItemClick(listView.getAdapter().getView(i, null, null), i, listView.getAdapter().getItemId(i));
+		       			listView.getChildAt(i).setBackgroundColor(0x6f6fff);
+		       			//listView.getAdapter().getView(i, null, null).setBackgroundColor(0x6f6fff);
+		       			//listView.invalidateViews();
+		       		}
+		       	}
+			} catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
+		}
 		if (postexecute.equals("getvolume"))
 		{
 			try {
