@@ -40,15 +40,18 @@ public class Backend {
 	
 	private void always() {
 			this.getcurrentsongs();
+		new Query().execute(server, "/currentsong", "currentsong");
 			this.getvolume();
 	}
 
 	public void prevtrack()  {
 			new Query().execute(server, "/prev", "prev");
+		new Query().execute(server, "/currentsong", "currentsong");
 	}
 	
 	public void nexttrack()  {
 			new Query().execute(server, "/next", "next");
+		new Query().execute(server, "/currentsong", "currentsong");
 	}
 	
 	public void getvolume()  {
