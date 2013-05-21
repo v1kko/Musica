@@ -36,6 +36,14 @@ def resume():
     instance.play()
 
 
+@authed_route('/currentsong', 'GET')
+@authed_route('/currentsong', 'POST')
+def currentsong():
+    x = instance.current_song
+    currentsong = x.artist, x.album, x.name, x.duration
+    return json.dumps(currentsong)
+
+
 @authed_route('/currentsongs', 'GET')
 @authed_route('/currentsongs', 'POST')
 def getcurrentsongs():
