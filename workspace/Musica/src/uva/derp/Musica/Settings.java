@@ -31,7 +31,7 @@ public class Settings extends PreferenceActivity implements
         // Setup the initial values
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         
-        server.setSummary(sharedPreferences.getString("server", "10.1.1.2"));
+        server.setSummary(sharedPreferences.getString("server", "10.0.2.2"));
         port.setSummary(sharedPreferences.getString("port", "9042"));
         password.setSummary(sharedPreferences.getString("password", "password"));
         
@@ -56,7 +56,7 @@ public class Settings extends PreferenceActivity implements
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
             String key) {
         // Let's do something a preference value changes
-        server.setSummary(sharedPreferences.getString("server", "localhost"));
+        server.setSummary(sharedPreferences.getString("server", "10.0.2.2"));
         port.setSummary(sharedPreferences.getString("port", "9042"));
         password.setSummary(sharedPreferences.getString("password", "password"));
     }

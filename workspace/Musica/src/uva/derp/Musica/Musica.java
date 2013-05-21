@@ -133,7 +133,7 @@ public class Musica extends Activity {
 		}
 		if (result.equals("exception1")){
 			wrongserver.show();
-			be.playing = false;
+		 	be.playing = false;
 		}
 		if (postexecute.equals("toggleplaybutton")) {
 	        Button play   = (Button) findViewById(R.id.playbutton);
@@ -146,9 +146,9 @@ public class Musica extends Activity {
 			}
 		}
 		if (postexecute.equals("currentsongs")) {
-			JSONObject json;
+			JSONArray jason;
 			try {
-				json = new JSONObject(result);
+				jason = new JSONArray(result);
 			} catch (JSONException e) {
 							// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -156,10 +156,9 @@ public class Musica extends Activity {
 				return;
 			}
 			try {
-				JSONArray bla = (JSONArray) json.get("currentsongs");
-				this.currentsongs = new String[bla.length()];
-				for (int i = 0; i < bla.length(); i++){
-					this.currentsongs[i]= bla.getJSONArray(i).getString(1); 
+				this.currentsongs = new String[jason.length()];
+				for (int i = 0; i < jason.length(); i++){
+					this.currentsongs[i] = jason.getJSONArray(i).getString(2); 
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -170,36 +169,7 @@ public class Musica extends Activity {
 	        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,this.currentsongs);
 	        listView.setAdapter(adapter);
 		}
-		if (postexecute.equals("currentsong")) {
-			JSONObject json;
-			try {
-				json = new JSONObject(result);
-				this.currentsong = (String) json.get("currentsong");
-		        for(int i = 0 ; i < this.currentsongs.length ; i ++ ){
-		       		if (this.currentsongs[i].equals(this.currentsong) )
-		       		{
-		       			Log.d("DBUG", Integer.toString(i));
-		       			listView.setFocusable(true);
-		       			listView.setFocusableInTouchMode(true);
-		       			//Oh android .... 
-		       			//listView.setItemChecked(i, true);
-		       			listView.setSelection(i);
-		       			
-		       			//listView.requestChildFocus(listView.getChildAt(i), listView);
-		       			//listView.performItemClick(listView, i, listView.getItemIdAtPosition(i));
-		       			//listView.setActivated(true);
-		       			//listView.getChildAt(i).performClick();
-		       			//listView.performItemClick(listView.getAdapter().getView(i, null, null), i, listView.getAdapter().getItemId(i));
-		       			listView.getChildAt(i).setBackgroundColor(0x6f6fff);
-		       			//listView.getAdapter().getView(i, null, null).setBackgroundColor(0x6f6fff);
-		       			//listView.invalidateViews();
-		       		}
-		       	}
-			} catch (Exception e) {
-				e.printStackTrace();
-				return;
-			}
-		}
+		
 		if (postexecute.equals("getvolume"))
 		{
 			try {

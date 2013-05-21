@@ -23,7 +23,7 @@ public class Backend {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(cxt);
 		password = prefs.getString("password", "password");
 		port = Integer.parseInt(prefs.getString("port", "9042"));
-		server = prefs.getString("server", "10.1.1.2");
+		server = prefs.getString("server", "10.0.2.2");
 	}
 	
 	/*
@@ -45,12 +45,10 @@ public class Backend {
 
 	public void prevtrack()  {
 			new Query().execute(server, "/prev", "prev");
-			this.always();
 	}
 	
 	public void nexttrack()  {
 			new Query().execute(server, "/next", "next");
-			this.always();
 	}
 	
 	public void getvolume()  {
@@ -60,11 +58,10 @@ public class Backend {
 	public void setvolume(Integer noise)  {
 		noise = noise < 0 ? 0 : noise > 100 ? 100 : noise;
 			new Query().execute(server, "/volume/" + noise.toString(), "getvolume");
-			this.always();
 	}
 	
 	public String[] getcurrentsongs() {
-		new Query().execute(server, "/getcurrentsongs", "currentsongs");
+		new Query().execute(server, "/currentsongs", "currentsongs");
 		// TODO Auto- method stub
 		return null;
 	}
