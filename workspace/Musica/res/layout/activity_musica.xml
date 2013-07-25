@@ -33,6 +33,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="52dp"
+            android:background="@drawable/play_button_layer"
             android:longClickable="true"
             android:minHeight="115dip"
             android:minWidth="115dip" />

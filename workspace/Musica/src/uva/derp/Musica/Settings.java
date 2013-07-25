@@ -7,8 +7,7 @@ import android.preference.EditTextPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
-public class Settings extends PreferenceActivity implements
-        OnSharedPreferenceChangeListener {
+public class Settings extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
     private EditTextPreference server;
     private EditTextPreference port;
@@ -20,8 +19,8 @@ public class Settings extends PreferenceActivity implements
         // Load the XML preferences file
         addPreferencesFromResource(R.xml.preferences);
         // Get a reference to the preferences
-        server = (EditTextPreference) getPreferenceScreen().findPreference("server");
-        port =  (EditTextPreference) getPreferenceScreen().findPreference("port");
+        server   = (EditTextPreference) getPreferenceScreen().findPreference("server");
+        port     = (EditTextPreference) getPreferenceScreen().findPreference("port");
         password = (EditTextPreference) getPreferenceScreen().findPreference("password");
     }
 
@@ -35,16 +34,14 @@ public class Settings extends PreferenceActivity implements
         port.setSummary(sharedPreferences.getString("port", "9042"));
         password.setSummary(sharedPreferences.getString("password", "password"));
         
-        getPreferenceScreen().getSharedPreferences()
-                .registerOnSharedPreferenceChangeListener(this);
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         // Unregister the listener whenever a key changes
-        getPreferenceScreen().getSharedPreferences()
-                .unregisterOnSharedPreferenceChangeListener(this);
+        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
     
     public void onBackPressed() {
@@ -53,8 +50,7 @@ public class Settings extends PreferenceActivity implements
     	super.onBackPressed();
     }
 
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-            String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         // Let's do something a preference value changes
         server.setSummary(sharedPreferences.getString("server", "10.0.2.2"));
         port.setSummary(sharedPreferences.getString("port", "9042"));
