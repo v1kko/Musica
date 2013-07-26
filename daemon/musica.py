@@ -80,15 +80,17 @@ def set_volume(volume):
 
 
 if __name__ == '__main__':
+    password = 'password'
     if len(sys.argv) != 2:
         print 'Usage: python %s <password>' % sys.argv[0]
-        exit(0)
-
+        print 'Picking default password "password" for now..'
+    else:
+        password = sys.argv[1]
+    
     print '[+] Starting Musica HTTP Daemon'
     print '[x] Please wait while we load the playlist'
 
     instance = musicapi.instance('iTunes')
-    password = sys.argv[1]
 
     playlist = instance.current_playlist
 

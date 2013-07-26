@@ -10,7 +10,7 @@ import android.preference.PreferenceManager;
 
 public class Backend {
 
-	private String server;
+	public static String server;
 	static int port;
 	static String password;
 	public boolean playing;
@@ -18,48 +18,44 @@ public class Backend {
 	public Backend(Context cxt) {
 		/* Create backend real OOP style */
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(cxt);
-		password = prefs.getString("password", "password");
-		port = Integer.parseInt(prefs.getString("port", "9042"));
-		server = prefs.getString("server", "10.0.2.2");
+		password = prefs.getString("password", Settings.defaultpassword);
+		port = Integer.parseInt(prefs.getString("port", Settings.defaultport));
+		server = prefs.getString("server", Settings.defaultserver);
 	}
 	
 	public void toggleplay() {
 		if (this.playing)
-			new Query().execute(server, "/pause", "toggleplaybutton");
+			new PauseQuery().send();
 		else
-			new Query().execute(server, "/play", "toggleplaybutton");
+			new PlayQuery().send();
 		this.playing = !this.playing;
-		this.always();
-	}
-	
-	private void always() {
-		this.getcurrentsongs();
-		new Query().execute(server, "/currentsong", "currentsong");
-		this.getvolume();
 	}
 
 	public void prevtrack() {
-		new Query().execute(server, "/prev", "prev");
-		new Query().execute(server, "/currentsong", "currentsong");
+		new PrevQuery().send();
 	}
 	
 	public void nexttrack() {
-		new Query().execute(server, "/next", "next");
-		new Query().execute(server, "/currentsong", "currentsong");
+		new NextQuery().send();
 	}
 	
 	public void getvolume() {
-		new Query().execute(server, "/volume", "getvolume");
+		new GetVolumeQuery().send();
 	}
 
 	public void setvolume(Integer volume) {
 		volume = volume < 0 ? 0 : volume > 100 ? 100 : volume;
-		new Query().execute(server, "/volume/" + volume.toString(), "getvolume");
+		new SetVolumeQuery().send(volume);
 	}
 	
 	public String[] getcurrentsongs() {
-		new Query().execute(server, "/currentsongs", "currentsongs");
-		new Query().execute(server, "/currentsong", "currentsong");
+		new SongsQuery().send();
+		// TODO Auto- method stub
+		return null;
+	}
+	
+	public String getcurrentsong() {
+		new SongQuery().send();
 		// TODO Auto- method stub
 		return null;
 	}
@@ -107,5 +103,60 @@ class Query extends AsyncTask<String, Integer, String> {
 	
 	protected void onPostExecute(String result) {
 		Musica.callback.getcallback(postexecute, result);
+	}
+}
+
+class GetVolumeQuery extends Query {
+	public void send() {
+		execute(Backend.server, "/volume", "getvolume");
+	}
+}
+
+class SongQuery extends GetVolumeQuery {
+	public void send() {
+		execute(Backend.server, "/currentsong", "currentsong");
+		//super.send();
+	}
+}
+
+class SongsQuery extends SongQuery {
+	public void send() {
+		execute(Backend.server, "/currentsongs", "currentsongs");
+		//super.send();
+	}
+}
+
+class PlayQuery extends SongQuery {
+	public void send() {
+		execute(Backend.server, "/play", "toggleplaybutton");
+		////execute(Backend.server, "/currentsong", "currentsong");
+		super.send();
+	}
+}
+
+class PauseQuery extends SongQuery {
+	public void send() {
+		execute(Backend.server, "/pause", "toggleplaybutton");
+		//super.send();
+	}
+}
+
+class PrevQuery extends SongQuery {
+	public void send() {
+		execute(Backend.server, "/prev", "prev");
+		//super.send();
+	}
+}
+
+class NextQuery extends SongQuery {
+	public void send() {
+		execute(Backend.server, "/next", "next");
+		//super.send();
+	}
+}
+
+class SetVolumeQuery extends Query {
+	public void send(Integer volume) {
+		execute(Backend.server, "/volume/" + volume.toString(), "getvolume");
 	}
 }

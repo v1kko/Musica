@@ -12,8 +12,12 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
     private EditTextPreference server;
     private EditTextPreference port;
     private EditTextPreference password;
+    public static String defaultserver = "10.0.2.2";
+    public static String defaultport = "9042";
+    public static String defaultpassword = "password";
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Load the XML preferences file
@@ -24,20 +28,22 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         password = (EditTextPreference) getPreferenceScreen().findPreference("password");
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     protected void onResume() {
         super.onResume();
         // Setup the initial values
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         
-        server.setSummary(sharedPreferences.getString("server", "10.0.2.2"));
-        port.setSummary(sharedPreferences.getString("port", "9042"));
-        password.setSummary(sharedPreferences.getString("password", "password"));
+        server.setSummary(sharedPreferences.getString("server", defaultserver));
+        port.setSummary(sharedPreferences.getString("port", defaultport));
+        password.setSummary(sharedPreferences.getString("password", defaultpassword));
         
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     protected void onPause() {
         super.onPause();
         // Unregister the listener whenever a key changes
@@ -52,8 +58,8 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         // Let's do something a preference value changes
-        server.setSummary(sharedPreferences.getString("server", "10.0.2.2"));
-        port.setSummary(sharedPreferences.getString("port", "9042"));
-        password.setSummary(sharedPreferences.getString("password", "password"));
+        server.setSummary(sharedPreferences.getString("server", defaultserver));
+        port.setSummary(sharedPreferences.getString("port", defaultport));
+        password.setSummary(sharedPreferences.getString("password", defaultpassword));
     }
 }

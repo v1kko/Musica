@@ -22,8 +22,4 @@
 	
     </PreferenceCategory>
 
-    <PreferenceCategory
-            android:title="Client Settings">
-    </PreferenceCategory>
-
 </PreferenceScreen>
