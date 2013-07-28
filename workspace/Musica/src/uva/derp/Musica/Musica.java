@@ -236,6 +236,7 @@ public class Musica extends Activity {
 				try {
 					Log.v("turd","GET YOUR SHIT TOGETHER TYRONE");
 					thr.interrupt();
+					thr.stop();
 				} catch (Exception e) {
 					StringWriter sw = new StringWriter();
 					PrintWriter pw = new PrintWriter(sw);
@@ -251,10 +252,18 @@ public class Musica extends Activity {
 							int i = curtime;
 							int firsti = i;
 							while (true) {
-								try {Thread.sleep(1000);} catch (Exception e) {}
+								try {
+									Thread.sleep(1000);
+								} catch (Exception e) {
+									StringWriter sw = new StringWriter();
+									PrintWriter pw = new PrintWriter(sw);
+									e.printStackTrace(pw);
+									Log.v("turd",sw.toString());
+									break;
+								}
 								i++;
 								// IT IS... UNSTOPPABLE!!!!!
-								if (interrupted() || isInterrupted() || Thread.currentThread().isInterrupted() || Thread.interrupted()) {
+								if (interrupted() || this.isInterrupted() || isInterrupted() || Thread.currentThread().isInterrupted() || Thread.interrupted()) {
 									Log.v("turd","IM OUTTA HERE");
 									break;
 								// ask for newly changed shit after 10 seconds or when track is done
