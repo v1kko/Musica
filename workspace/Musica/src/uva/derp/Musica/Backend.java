@@ -121,7 +121,7 @@ class GetVolumeQuery extends Query {
 
 class ProgressQuery extends Query {
 	public void send() {
-		new Query().execute(Backend.server, "/progress", "refreshprogress");
+		execute(Backend.server, "/progress", "refreshprogress");
 	}
 }
 

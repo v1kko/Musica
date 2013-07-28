@@ -1,5 +1,8 @@
 package uva.derp.Musica;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -33,7 +36,7 @@ public class Musica extends Activity {
 	private String currentsong;
 	private SeekBar volume;
 	public SeekBar time;
-	public BarTimer bt;
+	public Thread thr;
 	private ListView listView;
 	static public AlertDialog wrongsettings;
 	static public AlertDialog wrongserver;
@@ -80,7 +83,6 @@ public class Musica extends Activity {
 		/* Init */
 		be.getvolume();
 		be.getcurrentsongs();
-		be.getprogress();
 		/*/Init */
 		
 		/* objects from xml */
@@ -157,12 +159,18 @@ public class Musica extends Activity {
 	}
 	
 	public void settimebarpos(int curtime) {
+		Log.v("turd","ITSA "+Integer.toString(curtime)+" O CLOCK YO");
 		this.time.setProgress(curtime*1000/tottime);
 	}
 	
 	public void settitlefocus() {
-		listView.requestFocusFromTouch();
-		listView.setSelection(curindex);
+		try {
+			listView.setEnabled(false);
+			listView.requestFocusFromTouch();
+			listView.setSelection(curindex);
+		} catch (Exception e) {
+			
+		}
 	}
 
 	public void settitlefocus(String title) {
@@ -170,7 +178,6 @@ public class Musica extends Activity {
 			for (int i = 0; i < this.currentsongs.length; i++) {
 		   		if (this.currentsongs[i].equals(title)) {
 		   			Log.d("DBUG", Integer.toString(i));
-		   			listView.setEnabled(false);
 		   			settitlefocus();
 		   			curindex = i;
 		   		}
@@ -221,19 +228,49 @@ public class Musica extends Activity {
 			JSONArray json;
 			try {
 				json = new JSONArray(result);
-				int curtime = (int)Integer.parseInt(json.getString(0));
+				final int curtime = (int)Integer.parseInt(json.getString(0));
 				this.tottime = (int)Integer.parseInt(json.getString(1));
 				String cursong = json.getString(2);
 				settitlefocus(cursong);
 				settimebarpos(curtime);
-				try {bt.cancel(true);} catch (Exception e){}
+				try {
+					Log.v("turd","GET YOUR SHIT TOGETHER TYRONE");
+					thr.interrupt();
+				} catch (Exception e) {
+					
+				}
 				if (be.playing) {
-					bt = new BarTimer();
-					bt.execute(Integer.toString(curtime),"");
+					Log.v("turd","LETS FIRE THIS BITCH UP");
+					this.thr = new Thread() {
+						@Override
+						public void run() {
+							Log.v("turd","LLLLLLLETS GOOOO");
+							int i = curtime;
+							int firsti = i;
+							while (true) {
+								try {Thread.sleep(1000);} catch (Exception e) {}
+								i++;
+								// IT IS... UNSTOPPABLE!!!!!
+								if (interrupted() || isInterrupted() || Thread.currentThread().isInterrupted() || Thread.interrupted()) {
+									Log.v("turd","IM OUTTA HERE");
+									break;
+								// ask for newly changed shit after 10 seconds or when track is done
+								} else if (i == Musica.callback.tottime+1 || i == firsti+10) {
+									Log.v("turd","IMMA DONE YO");
+									Musica.callback.be.getprogress();
+									break;
+								}
+								Musica.callback.settimebarpos(i);
+							}
+						}
+					};
+					this.thr.start();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
-				return;
+				StringWriter sw = new StringWriter();
+				PrintWriter pw = new PrintWriter(sw);
+				e.printStackTrace(pw);
+				Log.v("turd",sw.toString());
 			}
 		} else if (postexecute.equals("getvolume")) {
 			try {
@@ -242,27 +279,6 @@ public class Musica extends Activity {
 				// TODO: handle exception
 			}
 		}
-	}
-}
-
-class BarTimer extends AsyncTask<String, Integer, String> {
-	@Override
-	protected String doInBackground(String... params) {
-		int i = Integer.parseInt(params[0]);
-		int firsti = i;
-		while (true) {
-			try {Thread.sleep(1000);} catch (Exception e) {}
-			i++;
-			if (isCancelled()) {
-				break;
-			// ask for newly changed shit after 10 seconds or when track is done
-			} else if (i == Musica.callback.tottime+1 || i == firsti+10) {
-				Musica.callback.be.getprogress();
-				break;
-			}
-			Musica.callback.settimebarpos(i);
-		}
-		return "";
 	}
 }
 
