@@ -226,12 +226,10 @@ public class Musica extends Activity {
 				String cursong = json.getString(2);
 				settitlefocus(cursong);
 				settimebarpos(curtime);
+				try {bt.cancel(true);} catch (Exception e){}
 				if (be.playing) {
-					try {bt.cancel(true);} catch (Exception e){}
 					bt = new BarTimer();
 					bt.execute(Integer.toString(curtime),"");
-				} else {
-					bt.cancel(true);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -251,12 +249,14 @@ class BarTimer extends AsyncTask<String, Integer, String> {
 	@Override
 	protected String doInBackground(String... params) {
 		int i = Integer.parseInt(params[0]);
+		int firsti = i;
 		while (true) {
 			try {Thread.sleep(1000);} catch (Exception e) {}
 			i++;
 			if (isCancelled()) {
 				break;
-			} else if (i == Musica.callback.tottime+1) {
+			// ask for newly changed shit after 10 seconds or when track is done
+			} else if (i == Musica.callback.tottime+1 || i == firsti+10) {
 				Musica.callback.be.getprogress();
 				break;
 			}
