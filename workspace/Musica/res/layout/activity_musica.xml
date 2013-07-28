@@ -3,29 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Musica" >
-
-        <ListView
-            android:id="@+id/currentsongs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/volumebar"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="2dp"
-            android:choiceMode="singleChoice" 
-            android:listSelector="#6f6fff">
-        </ListView>
-
-        <SeekBar
-            android:id="@+id/volumebar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/playbutton"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="41dp" />
-
+        
         <Button
             android:id="@+id/playbutton"
             android:layout_width="wrap_content"
@@ -90,14 +68,37 @@
             android:minHeight="50dip"
             android:minWidth="50dip" />
 
-        <ProgressBar
-            android:id="@+id/seekbar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="wrap_content"
+        <SeekBar
+            android:id="@+id/volumebar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/prevbutton"
             android:layout_alignParentBottom="true"
-            android:layout_alignRight="@+id/nextbutton"
-            android:layout_marginBottom="12dp" />
+            android:layout_toLeftOf="@+id/listbutton"
+            android:layout_toRightOf="@+id/settingsbutton"
+            android:layout_marginLeft="-30dp" 
+            android:layout_marginRight="-30dp" />
+
+        <SeekBar
+            android:id="@+id/timebar"
+            android:focusable="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/playbutton"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="33dp" />
+
+        <ListView
+            android:id="@+id/currentsongs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/timebar"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:choiceMode="singleChoice"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:listSelector="#6f6fff" >
+
+        </ListView>
 
 </RelativeLayout>

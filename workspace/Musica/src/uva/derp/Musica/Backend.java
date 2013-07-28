@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class Backend {
 
@@ -29,36 +30,41 @@ public class Backend {
 		else
 			new PlayQuery().send();
 		this.playing = !this.playing;
+		this.getvolume();
+		this.getprogress();
 	}
 
 	public void prevtrack() {
 		new PrevQuery().send();
+		this.getprogress();
 	}
 	
 	public void nexttrack() {
 		new NextQuery().send();
+		this.getprogress();
 	}
 	
 	public void getvolume() {
 		new GetVolumeQuery().send();
 	}
+	
+	public void getprogress() {
+		new ProgressQuery().send();
+	}
 
 	public void setvolume(Integer volume) {
 		volume = volume < 0 ? 0 : volume > 100 ? 100 : volume;
 		new SetVolumeQuery().send(volume);
+		Musica.callback.settitlefocus();
 	}
 	
 	public String[] getcurrentsongs() {
 		new SongsQuery().send();
+		this.getprogress();
 		// TODO Auto- method stub
 		return null;
 	}
 	
-	public String getcurrentsong() {
-		new SongQuery().send();
-		// TODO Auto- method stub
-		return null;
-	}
 }
 
 class Query extends AsyncTask<String, Integer, String> {
@@ -94,6 +100,7 @@ class Query extends AsyncTask<String, Integer, String> {
 				result += line;
 			
 			rd.close();
+			Log.v("ehlel",result);
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,46 +119,39 @@ class GetVolumeQuery extends Query {
 	}
 }
 
-class SongQuery extends GetVolumeQuery {
+class ProgressQuery extends Query {
 	public void send() {
-		execute(Backend.server, "/currentsong", "currentsong");
-		//super.send();
+		new Query().execute(Backend.server, "/progress", "refreshprogress");
 	}
 }
 
-class SongsQuery extends SongQuery {
+class SongsQuery extends Query {
 	public void send() {
 		execute(Backend.server, "/currentsongs", "currentsongs");
-		//super.send();
 	}
 }
 
-class PlayQuery extends SongQuery {
+class PlayQuery extends Query {
 	public void send() {
 		execute(Backend.server, "/play", "toggleplaybutton");
-		////execute(Backend.server, "/currentsong", "currentsong");
-		super.send();
 	}
 }
 
-class PauseQuery extends SongQuery {
+class PauseQuery extends Query {
 	public void send() {
 		execute(Backend.server, "/pause", "toggleplaybutton");
-		//super.send();
 	}
 }
 
-class PrevQuery extends SongQuery {
+class PrevQuery extends Query {
 	public void send() {
 		execute(Backend.server, "/prev", "prev");
-		//super.send();
 	}
 }
 
-class NextQuery extends SongQuery {
+class NextQuery extends Query {
 	public void send() {
 		execute(Backend.server, "/next", "next");
-		//super.send();
 	}
 }
 

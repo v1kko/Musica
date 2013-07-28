@@ -3,6 +3,7 @@ package uva.derp.Musica;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,18 +32,24 @@ public class Musica extends Activity {
 	private String[] currentsongs;
 	private String currentsong;
 	private SeekBar volume;
+	public SeekBar time;
+	public BarTimer bt;
 	private ListView listView;
 	static public AlertDialog wrongsettings;
 	static public AlertDialog wrongserver;
+	public int tottime;
+	public int curindex = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.v("ehlel","hai");
+		System.out.println("eh");
 		super.onCreate(savedInstanceState);
 		/* env */
 		cxt = this;
 		be = new Backend(this); 
 		Musica.callback = this;
-		be.toggleplay();
+		//be.toggleplay();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage("Your server settings don't seem right, please change them");
 		builder.setNeutralButton(
@@ -71,7 +78,9 @@ public class Musica extends Activity {
 		/*/env */
 		
 		/* Init */
+		be.getvolume();
 		be.getcurrentsongs();
+		be.getprogress();
 		/*/Init */
 		
 		/* objects from xml */
@@ -80,8 +89,12 @@ public class Musica extends Activity {
 		Button next     = (Button) findViewById(R.id.nextbutton);
 		Button prev     = (Button) findViewById(R.id.prevbutton);
 		Button settings = (Button) findViewById(R.id.settingsbutton);
+		Button listert  = (Button) findViewById(R.id.listbutton);
 		volume          =(SeekBar) findViewById(R.id.volumebar);
 		volume.setMax(100);
+		time            =(SeekBar) findViewById(R.id.timebar);
+		time.setMax(1000);
+		time.setEnabled(false);
 		/*/objects */
 		
 		/* listeners */
@@ -92,6 +105,15 @@ public class Musica extends Activity {
 				@Override
 				public void onClick(View v) {
 					be.toggleplay();
+				}
+			}
+		);
+		
+		listert.setOnClickListener(
+			new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					be.getcurrentsongs();
 				}
 			}
 		);
@@ -133,6 +155,30 @@ public class Musica extends Activity {
 		getMenuInflater().inflate(R.menu.musica, menu);
 		return true;
 	}
+	
+	public void settimebarpos(int curtime) {
+		this.time.setProgress(curtime*1000/tottime);
+	}
+	
+	public void settitlefocus() {
+		listView.requestFocusFromTouch();
+		listView.setSelection(curindex);
+	}
+
+	public void settitlefocus(String title) {
+		if (!title.equals(this.currentsong)) {
+			for (int i = 0; i < this.currentsongs.length; i++) {
+		   		if (this.currentsongs[i].equals(title)) {
+		   			Log.d("DBUG", Integer.toString(i));
+		   			listView.setEnabled(false);
+		   			settitlefocus();
+		   			curindex = i;
+		   		}
+		   	this.currentsong = title;
+		   	}
+		}
+		settitlefocus();
+	}
 
 	public void getcallback(String postexecute, String result) {
 		if (result.equals("-1")) {
@@ -148,10 +194,10 @@ public class Musica extends Activity {
 				play.setBackgroundResource(R.drawable.play_button_layer);
 			
 		} else if (postexecute.equals("currentsongs")) {
-			JSONArray jason;
+			JSONArray json;
 			
 			try {
-				jason = new JSONArray(result);
+				json = new JSONArray(result);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -159,9 +205,9 @@ public class Musica extends Activity {
 			}
 			
 			try {
-				this.currentsongs = new String[jason.length()];
-				for (int i = 0; i < jason.length(); i++)
-					this.currentsongs[i] = jason.getJSONArray(i).getString(2); 
+				this.currentsongs = new String[json.length()];
+				for (int i = 0; i < json.length(); i++)
+					this.currentsongs[i] = json.getJSONArray(i).getString(2); 
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -171,30 +217,22 @@ public class Musica extends Activity {
 			listView = (ListView) findViewById(R.id.currentsongs);
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, this.currentsongs);
 			listView.setAdapter(adapter);
-		} else if (postexecute.equals("currentsong")) {
+		} else if (postexecute.equals("refreshprogress")) {
 			JSONArray json;
 			try {
 				json = new JSONArray(result);
-				this.currentsong = (String)json.getString(2);
-				for (int i = 0; i < this.currentsongs.length; i++) {
-			   		if (this.currentsongs[i].equals(this.currentsong)) {
-			   			Log.d("DBUG", Integer.toString(i));
-			   			listView.setFocusable(true);
-			   			listView.setFocusableInTouchMode(true);
-			   			//Oh android .... 
-			   			//listView.setItemChecked(i, true);
-			   			listView.setSelection(i);
-			   			
-			   			//listView.requestChildFocus(listView.getChildAt(i), listView);
-			   			//listView.performItemClick(listView, i, listView.getItemIdAtPosition(i));
-			   			//listView.setActivated(true);
-			   			//listView.getChildAt(i).performClick();
-			   			//listView.performItemClick(listView.getAdapter().getView(i, null, null), i, listView.getAdapter().getItemId(i));
-			   			listView.getChildAt(i).setBackgroundColor(0x6f6fff);
-			   			//listView.getAdapter().getView(i, null, null).setBackgroundColor(0x6f6fff);
-			   			//listView.invalidateViews();
-			   		}
-			   	}
+				int curtime = (int)Integer.parseInt(json.getString(0));
+				this.tottime = (int)Integer.parseInt(json.getString(1));
+				String cursong = json.getString(2);
+				settitlefocus(cursong);
+				settimebarpos(curtime);
+				if (be.playing) {
+					try {bt.cancel(true);} catch (Exception e){}
+					bt = new BarTimer();
+					bt.execute(Integer.toString(curtime),"");
+				} else {
+					bt.cancel(true);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				return;
@@ -209,20 +247,37 @@ public class Musica extends Activity {
 	}
 }
 
+class BarTimer extends AsyncTask<String, Integer, String> {
+	@Override
+	protected String doInBackground(String... params) {
+		int i = Integer.parseInt(params[0]);
+		while (true) {
+			try {Thread.sleep(1000);} catch (Exception e) {}
+			i++;
+			if (isCancelled()) {
+				break;
+			} else if (i == Musica.callback.tottime+1) {
+				Musica.callback.be.getprogress();
+				break;
+			}
+			Musica.callback.settimebarpos(i);
+		}
+		return "";
+	}
+}
+
 class extraClass implements OnSeekBarChangeListener{
 
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-		Musica.callback.be.setvolume(progress);
 	}
 
 	@Override
 	public void onStartTrackingTouch(SeekBar seekBar) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void onStopTrackingTouch(SeekBar seekBar) {
-		// TODO Auto-generated method stub
+		Musica.callback.be.setvolume(seekBar.getProgress());
 	}
 }
