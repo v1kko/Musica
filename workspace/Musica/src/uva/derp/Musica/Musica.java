@@ -237,7 +237,10 @@ public class Musica extends Activity {
 					Log.v("turd","GET YOUR SHIT TOGETHER TYRONE");
 					thr.interrupt();
 				} catch (Exception e) {
-					
+					StringWriter sw = new StringWriter();
+					PrintWriter pw = new PrintWriter(sw);
+					e.printStackTrace(pw);
+					Log.v("turd",sw.toString());
 				}
 				if (be.playing) {
 					Log.v("turd","LETS FIRE THIS BITCH UP");
