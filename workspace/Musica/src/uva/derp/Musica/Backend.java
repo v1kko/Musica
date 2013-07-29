@@ -27,25 +27,31 @@ public class Backend {
 	
 	// Pauses playback if playing and vice versa
 	public void toggleplay() {
-		if (this.playing)
-			new PauseQuery().send();
-		else
-			new PlayQuery().send();
-		this.playing = !this.playing;
-		this.getvolume();
-		this.getprogress();
+		if (Musica.callback.currentsongs.length != 0) {
+			if (this.playing)
+				new PauseQuery().send();
+			else
+				new PlayQuery().send();
+			this.playing = !this.playing;
+			this.getvolume();
+			this.getprogress();
+		}
 	}
 
 	// Return to previous track
 	public void prevtrack() {
-		new PrevQuery().send();
-		this.getprogress();
+		if (Musica.callback.curindex != 0) {
+			new PrevQuery().send();
+			this.getprogress();
+		}
 	}
 	
 	// Skip to next track
 	public void nexttrack() {
-		new NextQuery().send();
-		this.getprogress();
+		if (Musica.callback.curindex != Musica.callback.currentsongs.length-1) {
+			new NextQuery().send();
+			this.getprogress();
+		}
 	}
 	
 	// Synchronize volume with server

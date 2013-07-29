@@ -27,7 +27,7 @@ import uva.derp.Musica.extraClass;
 
 public class Musica extends Activity {
 	// set to true to perform 3x5 unittests on startup
-	boolean performunittest = true;
+	boolean performunittest = false;
 	
 	Backend be;
 	static Musica callback;
@@ -41,8 +41,8 @@ public class Musica extends Activity {
 	public int tottime;
 	public int curvol = -1;
 	public int curindex = 0;
-	private String[] currentsongs = null;
-	private String currentsong = "-1";
+	public String[] currentsongs = null;
+	public String currentsong = "-1";
 	
 	// Called on application launch
 	// Initializes all UI elements and sets their corresponding actions
@@ -202,8 +202,6 @@ public class Musica extends Activity {
 			if (be.playing) {
 				play.setBackgroundResource(R.drawable.pause_button_layer);
 				// If playlist wasn't loaded, try loading it again if app set to play
-				if (currentsongs.length == 0)
-					be.getcurrentsongs();
 			} else play.setBackgroundResource(R.drawable.play_button_layer);
 			
 		} else if (postexecute.equals("currentsongs")) {
@@ -219,6 +217,7 @@ public class Musica extends Activity {
 				
 				// if empty playlist, try invoking nexttrack to circumvent a musicapi bug
 				if (json.length() == 0) {
+					be.playing = false;
 					be.nexttrack();
 					safesleep();
 					be.getcurrentsongs();
