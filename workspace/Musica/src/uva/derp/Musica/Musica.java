@@ -43,6 +43,7 @@ public class Musica extends Activity {
 	public int curindex = 0;
 	public String[] currentsongs = null;
 	public String currentsong = "-1";
+	public boolean altstart = false;
 	
 	// Called on application launch
 	// Initializes all UI elements and sets their corresponding actions
@@ -68,6 +69,7 @@ public class Musica extends Activity {
 				}
 			}
 		);
+		
 		wrongsettings = builder.create();
 		builder.setMessage("Your server doesn't support the whole API, please update");
 		builder.setNeutralButton(
@@ -147,7 +149,10 @@ public class Musica extends Activity {
 		
 		be.getvolume();
 		be.getcurrentsongs();
-		
+		be.forcepause();
+		be.playing=false;
+		play.setBackgroundResource(R.drawable.play_button_layer);
+
 		if (performunittest)
 			unittest();
 	}
@@ -199,10 +204,10 @@ public class Musica extends Activity {
 		
 		if (postexecute.equals("toggleplaybutton")) {
 			Button play = (Button) findViewById(R.id.playbutton);
-			if (be.playing) {
+			if (be.playing)
 				play.setBackgroundResource(R.drawable.pause_button_layer);
-				// If playlist wasn't loaded, try loading it again if app set to play
-			} else play.setBackgroundResource(R.drawable.play_button_layer);
+			else
+				play.setBackgroundResource(R.drawable.play_button_layer);
 			
 		} else if (postexecute.equals("currentsongs")) {
 			JSONArray json;
@@ -215,14 +220,26 @@ public class Musica extends Activity {
 			
 			try {
 				
-				// if empty playlist, try invoking nexttrack to circumvent a musicapi bug
+				// if empty playlist, try invoking nexttrack/play to circumvent a musicapi bug
 				if (json.length() == 0) {
-					be.playing = false;
-					be.nexttrack();
-					safesleep();
-					be.getcurrentsongs();
-					return;
+					if (!altstart) {
+						altstart = true;
+						be.playing = false;
+						be.nexttrack();
+						safesleep();
+						be.getcurrentsongs();
+						return;
+					} else {
+						altstart = false;
+						be.playing = true;
+						be.forceplay();
+						safesleep();
+						be.getcurrentsongs();
+						return;
+					}
 				}
+				
+				altstart = false;
 				
 				// fill currentsongs array
 				this.currentsongs = new String[json.length()];
@@ -263,7 +280,7 @@ public class Musica extends Activity {
 							int firsti = i;
 							while (true) {
 								try {
-									safesleep();
+									Thread.sleep(1000);
 									i++;
 									if (Thread.interrupted() || this.isInterrupted()) {
 										break;

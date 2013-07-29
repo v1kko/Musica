@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 
 public class Backend {
@@ -27,31 +28,65 @@ public class Backend {
 	
 	// Pauses playback if playing and vice versa
 	public void toggleplay() {
-		if (Musica.callback.currentsongs.length != 0) {
-			if (this.playing)
-				new PauseQuery().send();
-			else
-				new PlayQuery().send();
-			this.playing = !this.playing;
-			this.getvolume();
-			this.getprogress();
-		}
+		try {
+			if (Musica.callback.currentsongs.length != 0) {
+				if (this.playing)
+					new PauseQuery().send();
+				else
+					new PlayQuery().send();
+				this.playing = !this.playing;
+				this.getvolume();
+				this.getprogress();
+			}
+		} catch (Exception e) {}
+	}
+	
+	// Force pausing music on connect just so everything is nicely synced
+	public void forcepause() {
+		new ForcePauseQuery().send();
+		playing = false;
+	}
+	
+	// Force playing music
+	public void forceplay() {
+		new ForcePlayQuery().send();
+		playing = true;
+		getprogress();
 	}
 
 	// Return to previous track
+	@SuppressWarnings("deprecation")
 	public void prevtrack() {
-		if (Musica.callback.curindex != 0) {
-			new PrevQuery().send();
-			this.getprogress();
-		}
+		try {
+			if (Musica.callback.curindex == 0) {
+				Musica.callback.thr.stop();
+				Musica.callback.thr.interrupt();
+				if (playing) {
+					forcepause();
+				}
+			}
+		} catch (Exception e) {}
+
+		new PrevQuery().send();
+		this.getprogress();
 	}
 	
 	// Skip to next track
+	@SuppressWarnings("deprecation")
 	public void nexttrack() {
-		if (Musica.callback.curindex != Musica.callback.currentsongs.length-1) {
-			new NextQuery().send();
-			this.getprogress();
-		}
+		try {
+			if (Musica.callback.curindex == Musica.callback.currentsongs.length-1) {
+				Log.d("derp","u");
+				Musica.callback.thr.stop();
+				Musica.callback.thr.interrupt();
+				if (playing) {
+					forcepause();
+				}
+			}
+		} catch (Exception e) {}
+
+		new NextQuery().send();
+		this.getprogress();
 	}
 	
 	// Synchronize volume with server
@@ -154,6 +189,18 @@ class PlayQuery extends Query {
 class PauseQuery extends Query {
 	public void send() {
 		execute(Backend.server, "/pause", "toggleplaybutton");
+	}
+}
+
+class ForcePauseQuery extends Query {
+	public void send() {
+		execute(Backend.server, "/pause", "toggleplaybutton");
+	}
+}
+
+class ForcePlayQuery extends Query {
+	public void send() {
+		execute(Backend.server, "/play", "toggleplaybutton");
 	}
 }
 
