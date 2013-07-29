@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.util.Log;
+
 
 public class Backend {
 
@@ -16,6 +16,7 @@ public class Backend {
 	static String password;
 	public boolean playing;
 	
+	// Constructor
 	public Backend(Context cxt) {
 		/* Create backend real OOP style */
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(cxt);
@@ -24,6 +25,7 @@ public class Backend {
 		server = prefs.getString("server", Settings.defaultserver);
 	}
 	
+	// Pauses playback if playing and vice versa
 	public void toggleplay() {
 		if (this.playing)
 			new PauseQuery().send();
@@ -34,39 +36,45 @@ public class Backend {
 		this.getprogress();
 	}
 
+	// Return to previous track
 	public void prevtrack() {
 		new PrevQuery().send();
 		this.getprogress();
 	}
 	
+	// Skip to next track
 	public void nexttrack() {
 		new NextQuery().send();
 		this.getprogress();
 	}
 	
+	// Synchronize volume with server
 	public void getvolume() {
 		new GetVolumeQuery().send();
 	}
 	
+	// Synchronize current song and song time with server
 	public void getprogress() {
 		new ProgressQuery().send();
 	}
 
+	// Send new volume value to server
 	public void setvolume(Integer volume) {
 		volume = volume < 0 ? 0 : volume > 100 ? 100 : volume;
 		new SetVolumeQuery().send(volume);
 		Musica.callback.settitlefocus();
 	}
 	
+	// Synchronize playlist with server
 	public String[] getcurrentsongs() {
 		new SongsQuery().send();
 		this.getprogress();
-		// TODO Auto- method stub
 		return null;
 	}
 	
 }
 
+// Class for performing requests and listening to answers outside of UI thread
 class Query extends AsyncTask<String, Integer, String> {
 
 	String postexecute = "";
@@ -84,7 +92,7 @@ class Query extends AsyncTask<String, Integer, String> {
 			this.postexecute = params[2];
 		
 		try {
-			URL url = new URL("http", server, Backend.port ,request + "?" + pass, null);
+			URL url = new URL("http", server, Backend.port, request + "?" + pass, null);
 			HttpURLConnection conn = ((HttpURLConnection) url.openConnection());
 			conn.setRequestMethod("POST");
 			
@@ -100,7 +108,6 @@ class Query extends AsyncTask<String, Integer, String> {
 				result += line;
 			
 			rd.close();
-			Log.v("ehlel",result);
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -108,6 +115,7 @@ class Query extends AsyncTask<String, Integer, String> {
 		}
 	}
 	
+	// Invokes getcallback with possible third argument after receiving answer to query
 	protected void onPostExecute(String result) {
 		Musica.callback.getcallback(postexecute, result);
 	}
